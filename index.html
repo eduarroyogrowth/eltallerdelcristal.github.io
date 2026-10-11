@@ -26,6 +26,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   <main>
     <section>
+     <h2>Inicia tu proyecto</h2>
+     <!-- Formulario previo a WhatsApp -->
+     <form id="lead-form">
+       <input type="text" id="nombre" placeholder="Tu Nombre" required>
+       <input type="email" id="correo" placeholder="Tu Correo electrónico" required>
+       <button type="submit" id="btn-whatsapp">Cotizar por WhatsApp</button>
+     </form>
+    </section>
+    <section>
       <h2>Trabajos Realizados</h2>
       <!-- Galería de imágenes y especificaciones -->
     </section>
@@ -34,14 +43,57 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <h2>Garantía y Materiales</h2>
       <!-- Explicación de vidrios y acabados -->
     </section>
-
-    <section>
-      <h2>Inicia tu proyecto</h2>
-      <!-- Botón con el ID exacto para la regla de GTM -->
-      <a href="https://wa.me/TUNUMERO?text=Hola,%20deseo%20cotizar%20un%20proyecto%20a%20medida" id="btn-whatsapp">
-        Cotizar por WhatsApp
-      </a>
-    </section>
   </main>
+  <script>
+  // Función para extraer cookies de rastreo de Meta (_fbp, _fbc)
+  function getCookie(name) {
+    let match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+    if (match) return match[2];
+    return "";
+  }
+
+  document.getElementById('lead-form').addEventListener('submit', function(e) {
+    e.preventDefault(); // Pausa la redirección automática a WhatsApp
+
+    // 1. Generar el Event ID para la deduplicación
+    const eventId = 'lead_' + Date.now();
+
+    // 2. Extraer datos del formulario y cookies del navegador
+    const nombre = document.getElementById('nombre').value;
+    const correo = document.getElementById('correo').value;
+    const fbp = getCookie('_fbp');
+    const fbc = getCookie('_fbc');
+
+    // 3. Disparar el evento de GTM para el Píxel (Vía Navegador)
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event': 'whatsapp_lead',
+      'event_id': eventId // Este ID es crucial para decirle a Meta que es el mismo usuario
+    });
+
+    // 4. Enviar payload a Make.com (Vía Servidor)
+    // Reemplaza la URL con el Webhook real de tu escenario en Make
+    fetch('https://hook.us2.make.com/6628c0epzy466fo5okuex7ukge0so61w', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        event_name: 'Lead',
+        event_id: eventId,
+        nombre: nombre,
+        correo: correo,
+        fbp: fbp,
+        fbc: fbc
+      })
+    }).then(() => {
+      // 5. Redirigir finalmente a WhatsApp con un mensaje pre-armado
+      const mensaje = encodeURIComponent("Hola, deseo cotizar un proyecto a medida. Mi nombre es " + nombre);
+      window.location.href = "https://wa.me/997542840?text=" + mensaje;
+    }).catch(err => {
+      console.error("Error al enviar a Make:", err);
+      // Redirigir a WhatsApp de todos modos si Make falla temporalmente
+      window.location.href = "https://wa.me/TUNUMERO?text=Hola,%20deseo%20cotizar%20un%20proyecto";
+    });
+  });
+</script>
 </body>
 </html>
