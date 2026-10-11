@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Exhibeglass | Vitrinas y Peceras a Medida</title>
@@ -34,6 +33,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
        <button type="submit" id="btn-whatsapp">Cotizar por WhatsApp</button>
      </form>
     </section>
+    
     <section>
       <h2>Trabajos Realizados</h2>
       <!-- Galería de imágenes y especificaciones -->
@@ -44,6 +44,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <!-- Explicación de vidrios y acabados -->
     </section>
   </main>
+  
   <script>
   // Función para extraer cookies de rastreo de Meta (_fbp, _fbc)
   function getCookie(name) {
@@ -72,7 +73,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     });
 
     // 4. Enviar payload a Make.com (Vía Servidor)
-    // Reemplaza la URL con el Webhook real de tu escenario en Make
     fetch('https://hook.us2.make.com/6628c0epzy466fo5okuex7ukge0so61w', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
@@ -87,11 +87,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     }).then(() => {
       // 5. Redirigir finalmente a WhatsApp con un mensaje pre-armado
       const mensaje = encodeURIComponent("Hola, deseo cotizar un proyecto a medida. Mi nombre es " + nombre);
-      window.location.href = "https://wa.me/997542840?text=" + mensaje;
+      window.location.href = "https://wa.me/51997542840?text=" + mensaje;
     }).catch(err => {
       console.error("Error al enviar a Make:", err);
       // Redirigir a WhatsApp de todos modos si Make falla temporalmente
-      window.location.href = "https://wa.me/TUNUMERO?text=Hola,%20deseo%20cotizar%20un%20proyecto";
+      window.location.href = "https://wa.me/51997542840?text=Hola,%20deseo%20cotizar%20un%20proyecto";
     });
   });
 </script>
